@@ -17,7 +17,7 @@ public class DetailActivity extends AppCompatActivity {
     private static final String FORECAST_SHARE_HASHTAG = " #SunshineApp";
     private String mForecast;
     private TextView mWeatherDisplay;
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
