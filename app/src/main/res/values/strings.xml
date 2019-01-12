@@ -24,31 +24,20 @@
     <!--or something similar.-->
     <string name="app_name">Sunshine</string>
 
-
-    <!-- - - - - - - - - - - - - -->
-    <!--Used by SunshineDateUtils-->
-    <!-- - - - - - - - - - - - - -->
-
-    <string name="action_refresh">Refresh</string>
-    <string name="action_share">Share</string>
+    <!--By convention, "action" denotes that this String will be used as the label for an Action,-->
+    <!--typically from the action bar.  The ActionBar is limited real estate, so shorter is better.-->
     <string name="action_map">Map Location</string>
+    <string name="action_share">Share</string>
+
     <string name="action_settings">Settings</string>
+
+    <!--Used in overflow menu to refresh weather data-->
+    <string name="action_refresh">Refresh</string>
 
     <string name="error_message">
         An error has occurred. Please try again by clicking REFRESH
     </string>
 
-    <!-- For labelling today's forecast [CHAR LIMIT=15] -->
-    <string name="actor">Thanh Quyen</string>
-    <string name="today">Today</string>
-
-    <!-- For labelling tomorrow's forecast [CHAR LIMIT=15] -->
-    <string name="tomorrow">Tomorrow</string>
-
-    <!-- Date format [CHAR LIMIT=NONE] -->
-    <string name="format_full_friendly_date">
-        <xliff:g id="month">%1$s</xliff:g>, <xliff:g id="day">%2$s</xliff:g>
-    </string>
 
     <!-- - - - - - - - - - - -->
     <!--Used by Preferences  -->
@@ -80,6 +69,22 @@
 
     <!-- Value in SharedPreferences for imperial temperature unit option [CHAR LIMIT=NONE] -->
     <string name="pref_units_imperial" translatable="false">imperial</string>
+
+
+    <!-- - - - - - - - - - - - - -->
+    <!--Used by SunshineDateUtils-->
+    <!-- - - - - - - - - - - - - -->
+
+    <!-- For labelling today's forecast [CHAR LIMIT=15] -->
+    <string name="today">Today</string>
+
+    <!-- For labelling tomorrow's forecast [CHAR LIMIT=15] -->
+    <string name="tomorrow">Tomorrow</string>
+
+    <!-- Date format [CHAR LIMIT=NONE] -->
+    <string name="format_full_friendly_date">
+        <xliff:g id="month">%1$s</xliff:g>, <xliff:g id="day">%2$s</xliff:g>
+    </string>
 
 
     <!-- - - - - - - - - - - - - - - -->
