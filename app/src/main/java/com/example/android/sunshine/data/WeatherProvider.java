@@ -4,7 +4,10 @@ import android.content.ContentProvider;
 import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+
+import com.example.android.sunshine.utilities.SunshineDateUtils;
 
 import static com.example.android.sunshine.data.WeatherProvider.buildUriMatcher;
 
@@ -32,7 +35,37 @@ public class WeatherProvider extends ContentProvider {
      */
     @Override
     public int bulkInsert(Uri uri, ContentValues[] values) {
-        return super.bulkInsert(uri, values);
+        final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+        switch (sUriMatcher.match(uri)){
+            case CODE_WEATHER:
+                db.beginTransaction();
+                int rowInserted = 0;
+                try {
+                    for (ContentValues value : values) {
+                        long weatherDate =
+                                value.getAsLong(WeatherContract.WeatherEntry.COLUMN_DATE);
+                        if (!SunshineDateUtils.isDateNormalized(weatherDate)) {
+                            throw new IllegalArgumentException("Date must be normalized to insert");
+                        }
+
+                        long _id = db.insert(WeatherContract.WeatherEntry.TABLE_NAME, null, value);
+                        if (_id != -1) {
+                            rowInserted++;
+                        }
+                    }
+                    db.setTransactionSuccessful();
+                } finally {
+                    db.endTransaction();
+                }
+
+                if (rowInserted > 0){
+                    getContext().getContentResolver().notifyChange(uri, null);
+                }
+                return rowInserted;
+
+            default:
+                return super.bulkInsert(uri, values);
+        }
     }
 
     /**
@@ -53,6 +86,7 @@ public class WeatherProvider extends ContentProvider {
     @Override
     public Cursor query(Uri uri,  String[] projection,  String selection,  String[] selectionArgs,  String sortOrder) {
         Cursor cursor;
+
         switch (sUriMatcher.match(uri)){
             case CODE_WEATHER_WITH_DATE:
                 String normalizedUtcDateString = uri.getLastPathSegment();
@@ -107,7 +141,25 @@ public class WeatherProvider extends ContentProvider {
      */
     @Override
     public int delete(Uri uri,  String selection,  String[] selectionArgs) {
-        throw new RuntimeException("Student, you need to implement the delete method!");
+        int numRowsDeleted;
+        if (null == selection) selection = "1";
+        switch (sUriMatcher.match(uri)){
+            case CODE_WEATHER:
+                numRowsDeleted = mOpenHelper.getWritableDatabase().delete(
+                        WeatherContract.WeatherEntry.TABLE_NAME,
+                        selection,
+                        selectionArgs);
+                break;
+
+            default:
+                throw new UnsupportedOperationException("Unknown uri: " + uri);
+        }
+
+        if (numRowsDeleted != 0){
+
+            getContext().getContentResolver().notifyChange(uri,null);
+        }
+        return numRowsDeleted;
     }
 
     @Override
